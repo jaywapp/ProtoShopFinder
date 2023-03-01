@@ -4,21 +4,14 @@ import styled from 'styled-components';
 const { kakao } = window;
 
 const Div = styled.div`
-    grid-column: 2;
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
+    width: 600px;
+    height: 600px;
 `
 
 let kakaoMap;
 
-export function KakaoMap( props ) {
-    
-    let w = props.width;
-    let h = props.height;
-
-    console.log({w} + "/" + {h});
-
-    return ( <Div id="map" width={w} height={h}/> )
+export function KakaoMap() {
+    return ( <Div id="map"/> )
 }
 
 export function InitializeKakaoMap(x, y){
@@ -31,4 +24,16 @@ export function InitializeKakaoMap(x, y){
     };
 
     kakaoMap = new kakao.maps.Map(contaier, option);
+}
+
+export function ResizeKakaoMap( w, h ){
+    console.log('Kakaomap - resize');
+    console.log('width : ' + w + ' / ' + 'height : ' + h);
+
+    var container = document.getElementById('map');
+    
+    if(container != null){
+        container.style.width = w +'px';
+        container.style.height = h +'px'; 
+    }
 }

@@ -6,48 +6,23 @@ const mainColor = '#2a2b34';
 const subColor = '#3d3d4c';
 
 const MenuDiv = styled.div`
-  grid-column: 1;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-row: 1;
   background-color: ${mainColor};
 `;
 
 const LogoDiv = styled.h1`
+  grid-row: 1;
   color: white;
 `;
 
-const ListItemDiv = styled.div`
-  color: white;
-`;
-
-function Menu( props ){
-
+function Menu(){
   return (
-    <MenuDiv width={props.width} height={props.height} >
+    <MenuDiv>
       <LogoDiv>토방으로뛰어</LogoDiv>
-      <MenuItems/>
     </MenuDiv>
   );
-}
-
-function MenuItems( ){
-
-  return (
-    <div>
-    {
-      Datas.map(data=> MenuItem(data))
-    }
-    </div>
-  );
-}
-
-function MenuItem( data ){
-  return(
-    <ListItemDiv>
-      <p>{data.name}</p>
-      <p>{data.address}</p>
-    </ListItemDiv>
-  )
 }
 
 export default Menu;
