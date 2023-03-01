@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import Datas from '../../datas/data'
+import { KakaoDiv } from '../CommonComponent';
+import { GetDatas } from '../../datas/DataSelector';
 
 const { kakao } = window;
-
-const Div = styled.div`
-    width: 600px;
-    height: 600px;
-`
 
 let kakaoMap;
 
 export function KakaoMap() {
-    return ( <Div id="map"/> )
+    return ( <KakaoDiv id="map"/> )
 }
 
 export function InitializeKakaoMap(x, y){
-    console.log('Kakaomap - Initialuze');
 
     const contaier = document.getElementById('map');
     const option = {
@@ -28,8 +22,6 @@ export function InitializeKakaoMap(x, y){
 }
 
 export function ResizeKakaoMap( w, h ){
-    console.log('Kakaomap - resize');
-    console.log('width : ' + w + ' / ' + 'height : ' + h);
 
     var container = document.getElementById('map');
     
@@ -37,7 +29,7 @@ export function ResizeKakaoMap( w, h ){
         container.style.width = w +'px';
         container.style.height = h +'px'; 
 
-        kakaoMap.relayout();
+        Relayout();
     }
 }
 
@@ -79,9 +71,9 @@ export function DisplayMarker(lat, lon){
     // 인포윈도우를 마커위에 표시합니다 
     infowindow.open(kakaoMap, marker);
     
-    // 지도 중심좌표를 접속위치로 변경합니다
-    kakaoMap.setCenter(locPosition);  
+    SetCenter(locPosition);
 }
+
 
 export function PickAround(distance){
 
@@ -95,27 +87,11 @@ export function PickAround(distance){
             DisplayMarker(lat, lon);
 
             var aroundDatas = GetDatas(lat, lon, distance);
-            var points = aroundDatas.map(data => {
-                return new kakao.maps.LatLng(data.y, data.x);
-            })
+            var points = GetPoints(lat, lon, aroundDatas);
+            var bounds = GetBounds(points);
 
-            points.push(new kakao.maps.LatLng(lat, lon));
-
-            var bounds = new kakao.maps.LatLngBounds();    
-
-            var i, marker;
-            for (i = 0; i < points.length; i++) {
-                // 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
-                marker = new kakao.maps.Marker({ position : points[i] });
-                marker.setMap(kakaoMap);
-                
-                // LatLngBounds 객체에 좌표를 추가합니다
-                bounds.extend(points[i]);
-            }
-
-            aroundDatas.forEach(data => Pick(data.x, data.y, data.name));
-
-            kakaoMap.setBounds(bounds);
+            PickDatas(aroundDatas);
+            SetBounds(bounds);
         });
 
         console.log('fail to get current position');
@@ -126,42 +102,51 @@ export function PickAround(distance){
     }
 }
 
-function GetDatas(lat, lon, distance){
-    var arr = new Array();
+function PickDatas( datas ){
+    datas.forEach(data => Pick(data.x, data.y, data.name));
+}
 
-    Datas.forEach(data=>{
+function GetBounds(points){
 
-        var d = GetDistance(lat, lon, data.y, data.x);
-        console.log('name : ' + data.name + '/' + 'distance : ' + d);
+    var bounds = new kakao.maps.LatLngBounds();    
 
-        if(d <= distance){
-            console.log('▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲');
-            arr.push(data);
-        }
+    var i, marker;
+
+    for (i = 0; i < points.length; i++) {
+
+        // 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
+        marker = new kakao.maps.Marker({ position : points[i] });
+        marker.setMap(kakaoMap);
+        
+        // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(points[i]);
+    }
+
+    return bounds;
+}
+
+function GetPoints( lat, lon, datas ){
+
+    // data 좌표 수집
+    var points = datas.map(data => {
+        return new kakao.maps.LatLng(data.y, data.x);
     })
 
-    console.log(arr.length);
+    // 내 좌표 수집
+    points.push(new kakao.maps.LatLng(lat, lon));
 
-    return arr;
+    return points;
 }
 
-function GetDistance(lat1, lon1, lat2, lon2){
-      
-    var R = 6371; // km
-    var dLat = toRad(lat2-lat1);
-    var dLon = toRad(lon2-lon1);
-    var lat1 = toRad(lat1);
-    var lat2 = toRad(lat2);
-
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c;
-    return d;
+function SetCenter( position ){
+    // 지도 중심좌표를 접속위치로 변경합니다
+    kakaoMap.setCenter(position);  
 }
 
-function toRad(Value) 
-{
-    return Value * Math.PI / 180;
+function SetBounds( bounds ){
+    kakaoMap.setBounds(bounds);
 }
 
+function Relayout(){
+    kakaoMap.relayout();
+}
