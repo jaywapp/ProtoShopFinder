@@ -5,15 +5,17 @@ export const SubColor = '#3d3d4c';
 
 export const MenuDiv = styled.div`
     display: grid;
-    grid-template-columns: 300px 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr;
     grid-row: 1;
     background-color: ${MainColor};
 `;
 
 
-export const LogoDiv = styled.h1`
+export const LogoDiv = styled.h2`
     grid-row: 1;
     color: white;
+    margin-left: 10px;
+    margin-right: 5px;
 `;
 
 export const Button = styled.button`

@@ -11,6 +11,7 @@ const startY = 126.570667;
 
 const AppDiv = styled.div`
     display: grid;
+    height: ${(props) => props.width};
     grid-template-rows: ${(props) => props.height}px 1fr;
 `;
 
@@ -50,7 +51,7 @@ function App() {
   ResizeKakaoMap(windowSize.width, windowSize.height - menuHeight);
 
   return (
-    <AppDiv className="App">
+    <AppDiv className="App" width={windowSize.width}>
       <Menu/>
       <KakaoMap/>
     </AppDiv>
