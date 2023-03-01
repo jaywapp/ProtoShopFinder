@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/proto-shop-finder/static/css/main.073c9b0a.css",
+    "main.js": "/proto-shop-finder/static/js/main.eb3a4565.js",
+    "static/js/787.97f53aaf.chunk.js": "/proto-shop-finder/static/js/787.97f53aaf.chunk.js",
+    "index.html": "/proto-shop-finder/index.html",
+    "main.073c9b0a.css.map": "/proto-shop-finder/static/css/main.073c9b0a.css.map",
+    "main.eb3a4565.js.map": "/proto-shop-finder/static/js/main.eb3a4565.js.map",
+    "787.97f53aaf.chunk.js.map": "/proto-shop-finder/static/js/787.97f53aaf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.eb3a4565.js"
+  ]
+}
