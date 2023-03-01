@@ -35,5 +35,7 @@ export function ResizeKakaoMap( w, h ){
     if(container != null){
         container.style.width = w +'px';
         container.style.height = h +'px'; 
+
+        kakaoMap.relayout();
     }
 }

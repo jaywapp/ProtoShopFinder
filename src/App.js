@@ -21,16 +21,23 @@ function App() {
     height : window.innerHeight
   });
 
-  const handleResize= () =>{
+  const handleResize= debounce(() =>{
     setWindowSize({
       width : window.innerWidth,
       height : window.innerHeight,
     })
-  };
+  }, 100);
+
+  let isInitialized = false;
 
   useEffect(() => {
 
     InitializeKakaoMap(startX, startY);
+
+    if(!isInitialized)
+      ResizeKakaoMap(windowSize.width, windowSize.height - menuHeight);
+    
+    isInitialized = true;
     
     window.addEventListener('resize', handleResize);
     return () => {
